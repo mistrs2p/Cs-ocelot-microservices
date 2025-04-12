@@ -10,7 +10,17 @@
         }
       ],
       "UpstreamPathTemplate": "/product",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamHttpMethod": [ "GET" ],
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "10s",
+        "Limit": 3,
+        "PeriodTimespan": 10
+      },
+      "FileCacheOptions": {
+        "TtlSeconds": 10,
+        "Region": "product"
+      }
     },
     {
       "DownstreamPathTemplate": "/order",

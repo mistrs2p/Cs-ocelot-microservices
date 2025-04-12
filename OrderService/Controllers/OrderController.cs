@@ -5,5 +5,7 @@
 public class OrderController : ControllerBase
 {
     [HttpGet]
-    public IActionResult Get() => Ok(new[] { "Order 1", "Order 2" });
+    public IActionResult Get() {
+        return Ok(new[] { "Order 1", "Order 2" });
+    }
 }
