@@ -1,39 +1,46 @@
-# API Gateway with Ocelot
+# Ocelot API Gateway in Microservices Architecture
 
-This project demonstrates the implementation of an **API Gateway** using **Ocelot**, a lightweight and open-source API Gateway built for .NET microservice architecture.
+## 🧩 Overview
 
-## What is an API Gateway?
+**API Gateway** acts as a mediator between client applications and backend services within a **Microservices Architecture**. It is a software layer that serves as a **single entry point** for various APIs and performs tasks such as:
 
-An **API Gateway** acts as a mediator between client applications and backend microservices.  
-It is a software layer that functions as a single entry point for various APIs and performs several key tasks:
-
-1. **Request Composition**
-2. **Routing**
-3. **Protocol Translation**
-
-## Ocelot
-
-**Ocelot** is an open-source API Gateway designed for microservices architecture in .NET.
-
-### Key Features:
-- Caching results
-- Implementing rate limits
-- Lightweight and configuration-based
-
-> **Note:** Ocelot relies solely on a configuration file (`ocelot.json`) to route requests between the client and microservices.
+- Request Composition  
+- Routing  
+- Protocol Translation  
+- Authentication and Authorization  
+- Load Balancing  
+- Rate Limiting  
+- Caching  
+- Quality of Service (QoS)  
+- Header Transformation  
+- Middleware Pipeline Support  
 
 ---
 
-## Basic Configuration
+## 🚀 Ocelot: Lightweight API Gateway for .NET
 
-Ocelot's routing is configured using the `ocelot.json` file.
+> Ocelot is an open-source .NET-based API Gateway tailored for microservices-based applications.
 
-### Concepts:
+### ✅ Core Features
 
-- **Upstream (Gateway Level):** The endpoint exposed to clients.
-- **Downstream (Microservice Level):** The actual microservice endpoint that processes the request.
+- **Routing**: Maps incoming requests to the correct downstream microservice.
+- **Caching**: Uses `Ocelot.Cache.CacheManager` to cache downstream responses.
+- **Rate Limiting**: Controls the number of requests within a specific time window.
+- **QoS (Circuit Breaker)**: Integrates with **Polly** to handle service faults gracefully.
+- **Authentication and Authorization**: Supports JWT, IdentityServer4, etc.
+- **Load Balancing**: Round-robin load balancing across instances.
+- **Header Transformation**: Add/modify/remove headers.
+- **Middleware Support**: Custom middleware in pipeline.
+- **HTTPS & SSL Termination**
+- **Logging & Tracing**: Compatible with logging tools.
 
-### Configuration Structure
+---
+
+## 🛠 Basic Ocelot Configuration
+
+Ocelot relies on a single configuration file: `ocelot.json`.
+
+### 🧾 Example:
 
 ```json
 {
@@ -45,24 +52,22 @@ Ocelot's routing is configured using the `ocelot.json` file.
       "UpstreamPathTemplate": "/products",
       "UpstreamHttpMethod": [ "GET" ],
       "DownstreamPathTemplate": "/products",
-      "DownstreamPathScheme": "http",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5002
-        }
+        { "Host": "localhost", "Port": 5002 }
       ],
       "RateLimitOptions": {
         "EnableRateLimiting": true,
         "Period": "10s",
-        "Limit": 3,
-        "PeriodTimespan": 10
+        "Limit": 3
       },
       "FileCacheOptions": {
-        "TtlSeconds": 10,
-        "Period": "10s",
-        "Limit": 3,
-        "PeriodTimespan": 10
+        "TtlSeconds": 10
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 10000,
+        "TimeoutValue": 5000
       }
     }
   ]
